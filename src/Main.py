@@ -6,6 +6,7 @@ import os
 from playsound import playsound
 from gtts import gTTS
 import pyttsx
+from msvcrt import getch
 
 
 def speak(audioString):
@@ -66,11 +67,17 @@ def todd():
 r = sr.Recognizer()
 with sr.Microphone() as source:
     r.adjust_for_ambient_noise(source, duration=5)
-    print("Todd is up and running ")
+    print("Todd is up and running")
     speak("Todd is up and running")
     while 1:
-        audio = r.listen(source)
-        todd()
+        key = ord(getch())
+        if key == 96:
+            speak("How may I assist you?")
+            audio = r.listen(source)
+            todd()
+        if key == 27:
+            exit()
+
 
 
 
