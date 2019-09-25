@@ -11,15 +11,13 @@ This project is a voice-controlled personal assistant that is intended to be run
 ## Setup
 To run this project, you'll need to install (use pip install):
 * SpeechRecognition version 3.8.1
-* pyttsx version 1.1 <br />
-Navigate into the directory containing Main.py and run
-```
-$ python Main.py
-```
-That will run the file and you can press the back-tick key (same key as '~') to alert Todd to listen for a request, which it will then confirm with an audio cue. If you would like to set it to run automatically: <br />
+* pyttsx version 1.1 
+<br />
+
+Navigate into the directory containing Main.py and run `$ python Main.py`. That will run the file and you can press the back-tick key (same key as '~') to alert Todd to listen for a request, which it will then confirm with an audio cue. If you would like to set it to run automatically: <br />
 <br />
 **Windows:**
-1. Create a .bat file somewhere (I would recommend the home directory of your user folder (ex. C:/Users/Hunter)
+1. Create a .bat file somewhere (I would recommend the home directory of your user folder (ex. C:/Users/Hunter))
 2. Inside it, type
 ```
 ECHO OFF
