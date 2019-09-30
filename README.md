@@ -36,3 +36,4 @@ PAUSE
 * Ability to read from and write to several files that can save information about the local user (phone number, email, preferred name, etc.) for personalization
 * Ability to keep track of the To-Do list and push that list to a mobile number in the form of an SMS message
 * Integration into a Discord server for added functionality like fetching the status of members and giving an audio notification of a specific user/role coming online
+* Add reading of a new email as an option, given a user's login credentials in a separate file
