@@ -1,41 +1,16 @@
 import speech_recognition as sr
 import webbrowser
 from time import ctime
-import time
-import os
-from playsound import playsound
-from gtts import gTTS
 import pyttsx
-from msvcrt import getch
+import keyboard
 
 
-def speak(audioString):
-    # tts = gTTS(text=audioString, lang='en')
-    # tts.save("D:/vcs/GitHub/Todd/src/audio.mp3")
-    # playsound("D:/vcs/GitHub/Todd/src/audio.mp3")
-    # os.remove("D:/vcs/GitHub/Todd/src/audio.mp3")
+def speak(audio_string):
     engine = pyttsx.init()
     sound = engine.getProperty('voices')
     engine.setProperty('voice', sound[0].id)
-    engine.say(audioString)
+    engine.say(audio_string)
     engine.runAndWait()
-
-
-# def recordAudio():
-#     r = sr.Recognizer()
-#     with sr.Microphone() as source:
-#         print("Say something!")
-#         audio = r.listen(source)
-#
-#         data = ""
-#         try:
-#             data = r.recognize_google(audio)
-#             print("You said: " + data)
-#         except sr.UnknownValueError:
-#             print("Google Speech Recognition could not understand audio")
-#         except sr.RequestError as e:
-#             print("Could not request results from Google Speech Recognition service; {0}".format(e))
-#         return data
 
 
 def todd():
@@ -63,20 +38,18 @@ def todd():
         print("Todd error; {0}".format(e))
 
 
-
 r = sr.Recognizer()
 with sr.Microphone() as source:
     r.adjust_for_ambient_noise(source, duration=5)
     print("Todd is up and running")
     speak("Todd is up and running")
     while 1:
-        key = ord(getch())
-        if key == 96:
+        # key = ord(getch())
+        if keyboard.is_pressed('`'):
             speak("How may I assist you?")
             audio = r.listen(source)
             todd()
-        if key == 27:
-            exit()
+
 
 
 
