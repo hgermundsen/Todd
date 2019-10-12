@@ -44,7 +44,6 @@ with sr.Microphone() as source:
     print("Todd is up and running")
     speak("Todd is up and running")
     while 1:
-        # key = ord(getch())
         if keyboard.is_pressed('`'):
             speak("How may I assist you?")
             audio = r.listen(source)
