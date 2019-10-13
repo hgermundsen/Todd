@@ -1,3 +1,4 @@
+PyYAML
 pyttsx==1.1
 SpeechRecognition==3.8.1
 keyboard==0.13.4

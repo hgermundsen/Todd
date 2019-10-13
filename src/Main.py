@@ -3,6 +3,8 @@ import webbrowser
 from time import ctime
 import pyttsx
 import keyboard
+import yaml
+from yaml import Loader, Dumper
 
 
 def speak(audio_string):
@@ -13,7 +15,7 @@ def speak(audio_string):
     engine.runAndWait()
 
 
-def todd():
+def todd(info):
     try:
         data = r.recognize_google(audio)
         if "how are you" in data:
@@ -23,13 +25,24 @@ def todd():
         if "shut down" in data:
             speak("Shutting down now")
             exit(0)
+        if "change my name to" in data:
+            new_name = data[18:]
+            info.update({"name": new_name})
+            yaml.dump(info, open("config.yaml", "w"), Dumper=Dumper)
+            speak("Sounds good, your name is now" + new_name)
+        if "I'd like to change my email" in data:
+            speak("Alright, type your new email in the terminal")
+            new_email = raw_input('New Email:')
+            info.update({"email": new_email})
+            yaml.dump(info, open("config.yaml", "w"), Dumper=Dumper)
+            speak("Your new email is " + new_email)
         if "where is" in data:
             data = data.split(" ")
             location = ""
             for item in data:
                 if item != "where" and item != "is":
-                    location = location + item + ""
-            speak("Hold on Hunter, I will show you where " + location.rstrip() + " is.")
+                    location = location + item + " "
+            speak("Hold on " + info.get("name") + ", I will show you where " + location.rstrip() + " is.")
             webbrowser.register('firefox', None, webbrowser.BackgroundBrowser("C:/Program Files/Mozilla Firefox/firefox.exe"))
             webbrowser.get('firefox').open_new_tab('https://www.google.com/maps/place/' + location + "/&amp;")
     except sr.UnknownValueError:
@@ -39,6 +52,7 @@ def todd():
 
 
 r = sr.Recognizer()
+file = yaml.load(open("config.yaml", "r"), Loader=Loader)
 with sr.Microphone() as source:
     r.adjust_for_ambient_noise(source, duration=5)
     print("Todd is up and running")
@@ -47,7 +61,7 @@ with sr.Microphone() as source:
         if keyboard.is_pressed('`'):
             speak("How may I assist you?")
             audio = r.listen(source)
-            todd()
+            todd(file)
 
 
 
