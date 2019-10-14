@@ -5,6 +5,7 @@ import pyttsx
 import keyboard
 import yaml
 from yaml import Loader, Dumper
+import smtplib
 
 
 def speak(audio_string):
@@ -13,6 +14,22 @@ def speak(audio_string):
     engine.setProperty('voice', sound[0].id)
     engine.say(audio_string)
     engine.runAndWait()
+
+
+def send_email(from_addr, to_addr, cc_addr_list, subject, message, login,
+               password, smtpserver='smtp.gmail.com:587'):
+    header = 'From: %s\n' % from_addr
+    header += 'To: %s\n' % ','.join(to_addr)
+    header += 'Cc: %s\n' % ','.join(cc_addr_list)
+    header += 'Subject: %s\n\n' % subject
+    message = header + message
+
+    server = smtplib.SMTP(smtpserver)
+    server.starttls()
+    server.login(login, password)
+    issues = server.sendmail(from_addr, to_addr, message)
+    server.quit()
+    return issues
 
 
 def todd(info):
@@ -43,8 +60,22 @@ def todd(info):
                 if item != "where" and item != "is":
                     location = location + item + " "
             speak("Hold on " + info.get("name") + ", I will show you where " + location.rstrip() + " is.")
-            webbrowser.register('firefox', None, webbrowser.BackgroundBrowser("C:/Program Files/Mozilla Firefox/firefox.exe"))
+            webbrowser.register('firefox', None,
+                                webbrowser.BackgroundBrowser("C:/Program Files/Mozilla Firefox/firefox.exe"))
             webbrowser.get('firefox').open_new_tab('https://www.google.com/maps/place/' + location + "/&amp;")
+        if "send me an audio text" in data:
+            speak("Alright, what would you like me to send?")
+            new_audio = r.listen(source)
+            text = r.recognize_google(new_audio)
+            send_email('Todd@yourpc.net', info.get("phone") + "@vtext.com", "", "", text,
+                       info.get("email"), info.get("email app password"))
+            speak("Text sent")
+        if "send me a text" in data:
+            speak("Alright, what would you like me to send?")
+            text = raw_input('Text:')
+            send_email('Todd@yourpc.net', info.get("phone") + "@vtext.com", "", "", text,
+                       info.get("email"), info.get("email app password"))
+            speak("Text sent")
     except sr.UnknownValueError:
         pass
     except sr.RequestError as e:
@@ -62,8 +93,3 @@ with sr.Microphone() as source:
             speak("How may I assist you?")
             audio = r.listen(source)
             todd(file)
-
-
-
-
-
